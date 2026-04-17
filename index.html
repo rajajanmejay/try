@@ -1023,7 +1023,15 @@
 
             <div class="form-group">
               <label class="form-label">IISc Email Address *</label>
-              <input type="email" name="email" id="email" placeholder="arjun@iisc.ac.in" required>
+              <input 
+                type="email" 
+                name="Email IISc" 
+                id="email" 
+                placeholder="username@iisc.ac.in" 
+                pattern=".+@iisc\.ac\.in" 
+                title="Please use your official @iisc.ac.in email address"
+                required
+              >
             </div>
 
             <div class="form-group">
@@ -1115,8 +1123,8 @@
           </form>
 
           <div class="success-msg" id="successMsg">
-            <h4>🎉 Registration Received!</h4>
-            <p>Welcome to IISc Badminton Club! You'll receive a confirmation email within 24 hours. See you on the courts!</p>
+            <h4>📩 Action Required: Verify Your Email</h4>
+            <p>We've sent a <b>confirmation link</b> to your IISc email address. Your registration for the club and upcoming tournaments like <b>Spectrum 2026</b> will only be finalized once you click that link.</p>
           </div>
         </div>
       </div>
@@ -1514,7 +1522,13 @@
         status.classList.add('show');
         form.reset();
       } else {
-        alert("Oops! There was a problem submitting your form. Please check your internet.");
+        // Formspree provides error details in the JSON response
+        const data = await response.json();
+        if (data.errors) {
+          alert(data.errors.map(error => error.message).join(", "));
+        } else {
+          alert("Oops! There was a problem submitting your form. Please check your internet.");
+        }
       }
     } catch (error) {
       alert("Connectivity error. Please try again.");
